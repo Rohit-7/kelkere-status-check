@@ -1,14 +1,12 @@
 from flask import Flask, render_template, jsonify, request
-from datetime import date
 import pandas as pd
-import time
 import socket
 
 app = Flask(__name__)
 app.config.from_pyfile('./config.py')
 server_list = []
 
-@app.route('/',methods=['GET'])
+@app.route('/',methods=['GET','POST'])
 def index_page():    
     filepath = app.config['SERVERS_FILE_LOCATION']
     excel_data_frame = pd.read_excel(filepath, sheet_name=0)
@@ -37,17 +35,20 @@ def test_conn():
     if server is not None and port is not None:
         # print(server,port)
         status = None
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex((server,port))
-        sock.settimeout(2)
-        if result == 0:
-            # print('Port is open.')
-            status = 1
-        else:
-            # print('Port is closed.')
-            status = 0
-        sock.close()
-        return jsonify({'Status':status})
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            result = sock.connect_ex((server,port))
+            sock.settimeout(2)
+            if result == 0:
+                # print('Port is open.')
+                status = 1
+            else:
+                # print('Port is closed.')
+                status = 0
+            sock.close()
+            return jsonify({'Status':status})
+        except:
+            return jsonify({'Status':status})
     
     else:
         return "Unknown"
