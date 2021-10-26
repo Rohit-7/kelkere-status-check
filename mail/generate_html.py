@@ -60,7 +60,7 @@ for comp in servers:
             <table align='left'>
                 <tr>
                     <td>
-                        <span style="''' + box_style + (green_box if servers[comp][env]==200 else red_box) + '''"> ''' + str(env) + ''' </span>
+                        <span style="''' + box_style + (green_box if servers[comp][env]==200 else red_box) + '''"> ''' + str(env) + '''<span style="color:'''+ ('#7CFC00' if servers[comp][env]==200 else '#FF3131') +'''">X</span></span>
                         <span>&emsp;</span>
                     </td>
                 </tr>
